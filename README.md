@@ -1,3 +1,5 @@
+> **[shane.logsdon.io](https://shane.logsdon.io)** — writing and projects on agentic workflows, web standards, and payments engineering.
+
 # skills-vault-rituals
 
 Daily and session ritual skills for Claude Code. 5 skills for start-of-day, end-of-day, planning, logging, and inbox triage.
