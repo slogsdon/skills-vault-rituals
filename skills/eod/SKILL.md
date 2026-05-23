@@ -14,11 +14,11 @@ End-of-day accountability audit. Delegate analysis to Qwen; Claude handles write
    - `obsidian read file='Daily Notes/[today's date]'`
    - `obsidian read file='Context/patterns'`
    - `obsidian read file='Context/accountability'`
-3. Call `mcp__lmstudio-agent__qwen_start` (standalone) or `mcp__plugin_shane-config_lmstudio-agent__qwen_start` (plugin — use whichever is available) with:
+3. Call `mcp__ollama-agent__qwen_start` (standalone) or `mcp__plugin_shane-config_ollama-agent__qwen_start` (plugin — use whichever is available) with:
    - `task`: "You are Shane's EOD accountability agent. Compare the 'Today's Focus' section against the 'Session Log' section in today's daily note (provided). For each focus item NOT reflected in the session log, flag it as deferred. Check patterns.md for existing deferral counts and increment them. Flag any item now at 3+ deferrals with: 'PATTERN ALERT: [task] has been deferred [N] times. Is this actually a priority?' Output: (1) EOD Audit block for the daily note, (2) updated rows for patterns.md Deferred Tasks Log."
    - `skill`: "eod"
    - `context`: content of all three files
-4. Loop: if `status` is `"running"`, call `mcp__lmstudio-agent__qwen_continue` (or `mcp__plugin_shane-config_lmstudio-agent__qwen_continue` in plugin) with `session_id`; repeat until `status` is `"done"` or `"error"`
+4. Loop: if `status` is `"running"`, call `mcp__ollama-agent__qwen_continue` (or `mcp__plugin_shane-config_ollama-agent__qwen_continue` in plugin) with `session_id`; repeat until `status` is `"done"` or `"error"`
 5. Walk check:
    - Ask Shane: "Did you walk today? (y/n / skipped)"
    - Log to today's session log: `obsidian append file='Daily Notes/[today's date]' content='**[HH:MM]** 🚶 Walk: [yes/no/skipped]'`
