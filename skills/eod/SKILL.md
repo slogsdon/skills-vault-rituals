@@ -24,7 +24,13 @@ End-of-day accountability audit. Delegate analysis to Qwen; Claude handles write
    - Log to today's session log: `obsidian append file='Daily Notes/[today's date]' content='**[HH:MM]** 🚶 Walk: [yes/no/skipped]'`
    - If yes: in patterns.md find `walk_streak_missed` and reset to 0 (skip if field absent)
    - If no or skipped: find or add `walk_streak_missed` in patterns.md, increment by 1; flag if 3+
-6. Parse Qwen's `result`:
+6. Decision avoidance scan (before writing the audit):
+   - Scan focus items and session log entries for language like "figure out", "decide on", "choose between", "TBD", "still thinking about", or any item that's clearly an undecided decision rather than a task.
+   - For each one found, check `Context/avoidance-map` to see if it already exists.
+   - If it appears in the map already: note it as recurring in the EOD Audit — "Decision recurring: [item] — consider running /decide"
+   - Do not write to avoidance-map here; that's the /decide skill's job. Just surface it in the audit.
+
+7. Parse Qwen's `result`:
    - Run `obsidian append file='Daily Notes/[today's date]' content='## EOD Audit\n\n[audit block]'`
    - Run `obsidian append file='Context/patterns' content='[updated deferral rows]'` (or use read→edit cycle if replacing existing rows)
    - For each item Qwen marks as completed today: read `Context/accountability`, find the matching planning note status line (e.g., "visual polish remaining", "in progress"), and update it to reflect completion with the date. Use the Write tool on the vault file path directly (`~/Library/Mobile Documents/iCloud~md~obsidian/Documents/Personal/Context/accountability.md`). This keeps accountability.md current so /morning always sees accurate state.
@@ -54,6 +60,12 @@ Execute the skill directly:
     - Note current time (HH:MM); log: `obsidian append file='Daily Notes/[today's date]' content='**[HH:MM]** 🚶 Walk: [yes/no/skipped]'`
     - If yes: find `walk_streak_missed` in patterns.md; reset to 0 if present
     - If no or skipped: find or add `walk_streak_missed` in patterns.md, increment by 1; add PATTERN ALERT if 3+
+3b. Decision avoidance scan:
+    - Scan focus items and session log for language like "figure out", "decide on", "choose between", "TBD", "still thinking about", or any item that's clearly an undecided decision.
+    - For each one found, check `Context/avoidance-map` (if it exists) to see if it's already there.
+    - If recurring: add to the EOD Audit block: "Decision recurring: [item] — consider running /decide"
+    - Do not write to avoidance-map here; that's the /decide skill's job.
+
 4. For each deferred item, check `Context/patterns.md` Deferred Tasks Log:
    - If it exists: increment the deferral count
    - If new: add a row with count = 1
