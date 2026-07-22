@@ -12,8 +12,8 @@ Lightweight session capture. No Qwen needed — this is a direct write.
 1. Determine today's date (YYYY-MM-DD format)
 2. Get the current time (HH:MM format)
 3. Capture Shane's session note from his message (everything after /log)
-4. Run: `obsidian append file='[today's date]' content='**[HH:MM]** [Shane's note]'`
-   - If today's daily note doesn't exist yet, first run: `obsidian create name='Daily Notes/[today's date]' content='# [YYYY-MM-DD]\n\n## Session Log\n\n**[HH:MM]** [Shane's note]' silent`
+4. Run: `obsidian append path='Daily/[today's date].md' content='**[HH:MM]** [Shane's note]'`
+   - If today's daily note doesn't exist yet, first run: `obsidian create name='Daily/[today's date]' content='# [YYYY-MM-DD]\n\n## Session Log\n\n**[HH:MM]** [Shane's note]' silent`
    - If it exists but has no `## Session Log` heading, prepend `## Session Log\n\n` to the content being appended
 
 5. Commit the vault change:

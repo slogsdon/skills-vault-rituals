@@ -1,6 +1,6 @@
 {
   "name": "skills-vault-rituals",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Daily and session ritual skills — morning focus review, end-of-day audit, plan-tomorrow, session log, and inbox processing.",
   "author": { "name": "Shane Logsdon" },
   "license": "MIT"

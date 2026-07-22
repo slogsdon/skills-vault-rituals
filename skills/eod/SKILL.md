@@ -11,9 +11,9 @@ End-of-day accountability audit. Delegate analysis to Qwen; Claude handles write
 
 1. Determine today's date (YYYY-MM-DD format)
 2. Read these files using obsidian CLI:
-   - `obsidian read file='Daily Notes/[today's date]'`
-   - `obsidian read file='Context/patterns'`
-   - `obsidian read file='Context/accountability'`
+   - `obsidian read file='Daily/[today's date]'`
+   - `obsidian read file='Knowledge/Context/patterns'`
+   - `obsidian read file='Knowledge/Context/accountability'`
 3. Call `mcp__ollama-agent__qwen_start` (standalone) or `mcp__plugin_shane-config_ollama-agent__qwen_start` (plugin — use whichever is available) with:
    - `task`: "You are Shane's EOD accountability agent. Compare the 'Today's Focus' section against the 'Session Log' section in today's daily note (provided). For each focus item NOT reflected in the session log, flag it as deferred. Check patterns.md for existing deferral counts and increment them. Flag any item now at 3+ deferrals with: 'PATTERN ALERT: [task] has been deferred [N] times. Is this actually a priority?' Output: (1) EOD Audit block for the daily note, (2) updated rows for patterns.md Deferred Tasks Log."
    - `skill`: "eod"
@@ -21,19 +21,19 @@ End-of-day accountability audit. Delegate analysis to Qwen; Claude handles write
 4. Loop: if `status` is `"running"`, call `mcp__ollama-agent__qwen_continue` (or `mcp__plugin_shane-config_ollama-agent__qwen_continue` in plugin) with `session_id`; repeat until `status` is `"done"` or `"error"`
 5. Walk check:
    - Ask Shane: "Did you walk today? (y/n / skipped)"
-   - Log to today's session log: `obsidian append file='Daily Notes/[today's date]' content='**[HH:MM]** 🚶 Walk: [yes/no/skipped]'`
+   - Log to today's session log: `obsidian append file='Daily/[today's date]' content='**[HH:MM]** 🚶 Walk: [yes/no/skipped]'`
    - If yes: in patterns.md find `walk_streak_missed` and reset to 0 (skip if field absent)
    - If no or skipped: find or add `walk_streak_missed` in patterns.md, increment by 1; flag if 3+
 6. Decision avoidance scan (before writing the audit):
    - Scan focus items and session log entries for language like "figure out", "decide on", "choose between", "TBD", "still thinking about", or any item that's clearly an undecided decision rather than a task.
-   - For each one found, check `Context/avoidance-map` to see if it already exists.
+   - For each one found, check `Knowledge/Context/avoidance-map` to see if it already exists.
    - If it appears in the map already: note it as recurring in the EOD Audit — "Decision recurring: [item] — consider running /decide"
    - Do not write to avoidance-map here; that's the /decide skill's job. Just surface it in the audit.
 
 7. Parse Qwen's `result`:
-   - Run `obsidian append file='Daily Notes/[today's date]' content='## EOD Audit\n\n[audit block]'`
-   - Run `obsidian append file='Context/patterns' content='[updated deferral rows]'` (or use read→edit cycle if replacing existing rows)
-   - For each item Qwen marks as completed today: read `Context/accountability`, find the matching planning note status line (e.g., "visual polish remaining", "in progress"), and update it to reflect completion with the date. Use the Write tool on the vault file path directly (`~/Library/Mobile Documents/iCloud~md~obsidian/Documents/Personal/Context/accountability.md`). This keeps accountability.md current so /morning always sees accurate state.
+   - Run `obsidian append file='Daily/[today's date]' content='## EOD Audit\n\n[audit block]'`
+   - Run `obsidian append file='Knowledge/Context/patterns' content='[updated deferral rows]'` (or use read→edit cycle if replacing existing rows)
+   - For each item Qwen marks as completed today: read `Knowledge/Context/accountability`, find the matching planning note status line (e.g., "visual polish remaining", "in progress"), and update it to reflect completion with the date. Use the Write tool on the vault file path directly (`~/Library/Mobile Documents/iCloud~md~obsidian/Documents/Personal/Knowledge/Context/accountability.md`). This keeps accountability.md current so /morning always sees accurate state.
 7. If any day had no session log entries at all, add a `## Logging Gap` entry to that day's note
 8. Commit the vault changes:
    ```bash
@@ -48,25 +48,25 @@ Execute the skill directly:
 
 1. Determine today's date (YYYY-MM-DD)
 2. Read the following files via bash:
-   - `obsidian read file='Daily Notes/[today's date]'`
-   - `obsidian read file='Context/patterns'`
-   - `obsidian read file='Context/accountability'`
+   - `obsidian read file='Daily/[today's date]'`
+   - `obsidian read file='Knowledge/Context/patterns'`
+   - `obsidian read file='Knowledge/Context/accountability'`
 3. Diff focus vs session log:
    - Extract items from `## Today's Focus`
    - Extract completed items from `## Session Log`
    - Items in focus but NOT in session log = deferred today
 3a. Walk check:
     - Ask "Did you walk today? (y/n / skipped)"
-    - Note current time (HH:MM); log: `obsidian append file='Daily Notes/[today's date]' content='**[HH:MM]** 🚶 Walk: [yes/no/skipped]'`
+    - Note current time (HH:MM); log: `obsidian append file='Daily/[today's date]' content='**[HH:MM]** 🚶 Walk: [yes/no/skipped]'`
     - If yes: find `walk_streak_missed` in patterns.md; reset to 0 if present
     - If no or skipped: find or add `walk_streak_missed` in patterns.md, increment by 1; add PATTERN ALERT if 3+
 3b. Decision avoidance scan:
     - Scan focus items and session log for language like "figure out", "decide on", "choose between", "TBD", "still thinking about", or any item that's clearly an undecided decision.
-    - For each one found, check `Context/avoidance-map` (if it exists) to see if it's already there.
+    - For each one found, check `Knowledge/Context/avoidance-map` (if it exists) to see if it's already there.
     - If recurring: add to the EOD Audit block: "Decision recurring: [item] — consider running /decide"
     - Do not write to avoidance-map here; that's the /decide skill's job.
 
-4. For each deferred item, check `Context/patterns.md` Deferred Tasks Log:
+4. For each deferred item, check `Knowledge/Context/patterns.md` Deferred Tasks Log:
    - If it exists: increment the deferral count
    - If new: add a row with count = 1
    - If count reaches 3+: add a PATTERN ALERT line
@@ -81,8 +81,8 @@ Execute the skill directly:
    **Logging gaps:** [note if session log was empty]
    **OKR alignment:** [brief assessment of whether completed work mapped to active OKRs]
    ```
-6. Append the audit block to `Daily Notes/[today's date].md`
-7. Update the Deferred Tasks Log section in `Context/patterns.md` with new/incremented rows
+6. Append the audit block to `Daily/[today's date].md`
+7. Update the Deferred Tasks Log section in `Knowledge/Context/patterns.md` with new/incremented rows
 8. If the session log was empty, also add a `## Logging Gap` entry to today's note
 9. Commit the vault changes:
    ```bash
