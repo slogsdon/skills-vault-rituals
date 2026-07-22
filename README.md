@@ -1,6 +1,21 @@
 > **[shane.logsdon.io](https://shane.logsdon.io)** — writing and projects on agentic workflows, web standards, and payments engineering.
 
-# skills-vault-rituals
+# skills-vault-rituals — ARCHIVED
+
+> **This plugin is retired.** Its rituals have been merged into the
+> [Loop & Gate Accountability Kit](https://github.com/slogsdon/loop-and-gate-accountability-kit),
+> which is portable (works with plain markdown or an Obsidian vault) and runs on
+> Claude alone.
+>
+> | Was here | Now |
+> |---|---|
+> | `morning`, `eod`, `log`, `plan-tomorrow` | accountability-kit (portable versions) |
+> | `decide` | accountability-kit `decide` (on-demand ritual) |
+> | `inbox-process` | superseded by `loop-and-gate-foundation:inbox-triage` |
+> | `morning-pro` / `eod-pro` / `log-pro` (Qwen + Professional vault) | dropped — moving to the work machine separately |
+>
+> Removed from the `slogsdon-claude-code-config` marketplace. Kept read-only for
+> history.
 
 Daily and session ritual skills for Claude Code. 5 skills for start-of-day, end-of-day, planning, logging, and inbox triage.
 
